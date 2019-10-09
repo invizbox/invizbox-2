@@ -1,0 +1,13 @@
+config 'global'
+	option anon_mount '0'
+	option anon_swap '0'
+	option auto_mount '1'
+	option auto_swap '1'
+	option check_fs '0'
+	option delay_root '5'
+
+config 'mount'
+	option enabled '1'
+	option label 'PRIVATE'
+	option options 'rw,sync'
+	option target '/private'

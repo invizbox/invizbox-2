@@ -1,0 +1,17 @@
+package openvpn
+
+config openvpn vpn_1
+	option config '/etc/openvpn/openvpn_1.conf'
+	option enabled '1'
+
+config openvpn vpn_2
+	option config '/etc/openvpn/openvpn_2.conf'
+	option enabled '0'
+
+config openvpn vpn_3
+	option config '/etc/openvpn/openvpn_3.conf'
+	option enabled '0'
+
+config openvpn vpn_4
+	option config '/etc/openvpn/openvpn_4.conf'
+	option enabled '0'

@@ -1,0 +1,28 @@
+config system 'system'
+	option hostname 'invizbox2'
+	option timezone 'UTC'
+	option zonename 'UTC'
+
+config timeserver 'ntp'
+	option enabled '1'
+	option enable_server '1'
+	option interval '60'
+	list server '0.pool.ntp.org'
+	list server '1.pool.ntp.org'
+	list server '2.pool.ntp.org'
+	list server '3.pool.ntp.org'
+
+config led 'led_info'
+	option name 'INFO'
+	option sysfs 'invizbox:green:info'
+	option trigger 'none'
+
+config led 'led_globe'
+	option name 'GLOBE'
+	option sysfs 'invizbox:green:globe'
+	option trigger 'default-on'
+
+config led 'led_lock'
+	option name 'LOCK'
+	option sysfs 'invizbox:green:lock'
+	option trigger 'none'

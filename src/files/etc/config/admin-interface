@@ -1,0 +1,68 @@
+config service ftux
+	option devices 'true'
+	option home 'true'
+	option networks 'true'
+	option profiles 'true'
+	option support 'true'
+	option system 'true'
+
+config service onboarding
+	option needed 'true'
+
+config service features
+	option vpn_status 'true'
+
+config network 'lan_vpn1'
+	option blacklist 'false'
+	option profile_id '0'
+	option name 'InvizBox 2 VPN'
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'true'
+
+config network 'lan_vpn2'
+	option blacklist 'false'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'
+
+config network 'lan_vpn3'
+	option blacklist 'false'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'
+
+config network 'lan_vpn4'
+	option blacklist 'false'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'
+
+config network 'lan_tor'
+	option blacklist 'false'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'
+
+config network 'lan_clear1'
+	option blacklist 'false'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'
+
+config network 'lan_clear2'
+	option blacklist 'false'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'
+
+config network 'lan_local'
+	option profile_id ''
+	option name ''
+	option enabled_2_4ghz 'true'
+	option enabled_5ghz 'false'

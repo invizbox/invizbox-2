@@ -1,0 +1,22 @@
+### Using templates for ovpn files
+
+See the first entry in `/etc/config/vpn` for an example (auckland).
+
+If a lot of your ovpn files only differ when it comes to the server name/IP, you can use templates by putting them in
+this directory.
+
+A template file is identical to an ovpn file (openvpn.conf file) except that it replaces templated values from
+the one in `/etc/config/vpn`.
+
+Current templated values:
+
+* @SERVER_ADDRESS@ will be replaced by what you put in the address field in /etc/config/vpn.
+* @TUN@ will be replaced by tun1, tun2... as the template is used for the 1st, 2nd... network on your InvizBox 2
+
+I recommend that you check/change the following values in your ovpn file:
+
+```
+#persist-tun       -> make sure that line is removed or commented out as the VPN status will depend on it
+#persist-remote-ip -> make sure that line is removed or commented out as sometimes where there is no DNS the initial
+                      resolution can be wrong if you use a hostname in your OVPN file
+```

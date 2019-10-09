@@ -1,0 +1,24 @@
+config version version
+	option firmware '@2_VERSION@'
+
+config source server
+	option clear 'https://update.invizbox.com'
+	option onion 'http://invizboxinobxs4f.onion'
+
+config urls urls
+	option blacklists '/dns_blacklist/latest/blacklists'
+	option new_firmware_path '/invizbox_2_firmware/latest/InvizBox-2-invizbox-'
+	option vpn_configuration '/invizbox_2_vpn/latest/invizbox_vpn_configuration'
+	option vpn_status '/invizbox_vpn_status'
+	option nearest_cities '/nearest/invizbox'
+	option support_url 'https://support.invizbox.com/hc/en-us/categories/360000002314'
+	option support_email 'support@invizbox.com'
+
+config active active
+    option blacklists 'true'
+	option current_blacklists_sha '123456'
+	option current_vpn_sha '123456'
+	option firmware 'true'
+	option opkg 'true'
+	option version_only 'false'
+	option vpn 'true'
