@@ -22,7 +22,7 @@ iptables -I FORWARD ${forward_reject_line} -i br-lan_clear1 -o eth0.2 -m conntra
 iptables -I FORWARD ${forward_reject_line} -i eth0.2 -o br-lan_clear1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "!fw3 invizbox"
 
     # tor
-iptables -t nat -I PREROUTING -s 10.154.4.0/24 ! -d 10.154.4.1 -p tcp --syn -j DNAT --to-destination 172.31.1.1:9040 -m comment --comment "!fw3 invizbox"
+iptables -t nat -I PREROUTING -s 10.154.4.0/24 ! -d 10.154.0.1/21 -p tcp --syn -j DNAT --to-destination 172.31.1.1:9040 -m comment --comment "!fw3 invizbox"
 
     # vpn4
 iptables -t nat -I POSTROUTING --out-interface tun4 -j MASQUERADE -m comment --comment "!fw3 invizbox"
@@ -43,3 +43,16 @@ iptables -I FORWARD ${forward_reject_line} -i tun2 -o br-lan_vpn2 -m conntrack -
 iptables -t nat -I POSTROUTING --out-interface tun1 -j MASQUERADE -m comment --comment "!fw3 invizbox"
 iptables -I FORWARD ${forward_reject_line} -i br-lan_vpn1 -o tun1 -m conntrack --ctstate NEW,RELATED,ESTABLISHED -j ACCEPT -m comment --comment "!fw3 invizbox"
 iptables -I FORWARD ${forward_reject_line} -i tun1 -o br-lan_vpn1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "!fw3 invizbox"
+
+    # network device communication
+iptables -t mangle -A PREROUTING -m connmark ! --mark 0 -j CONNMARK --restore-mark -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -m connmark ! --mark 0 -j ACCEPT -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_vpn1 -j CONNMARK --save-mark --mask 1 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_vpn2 -j CONNMARK --save-mark --mask 2 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_vpn3 -j CONNMARK --save-mark --mask 4 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_vpn4 -j CONNMARK --save-mark --mask 8 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_tor -j CONNMARK --save-mark --mask 16 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_clear1 -j CONNMARK --save-mark --mask 32 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_clear2 -j CONNMARK --save-mark --mask 64 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -o br-lan_local -j CONNMARK --save-mark --mask 128 -m comment --comment "!fw3 invizbox"
+iptables -t mangle -A FORWARD -j CONNMARK --restore-mark -m comment --comment "!fw3 invizbox"

@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Copyright 2019 InvizBox Ltd
+#
+# Licensed under the InvizBox Shared License;
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#        https://www.invizbox.com/lic/license.txt
+
+conn_number=${PLUTO_CONNECTION:4}
+dev="tun${conn_number}"
+gateway_ip=`uci get network.lan_vpn${conn_number}.ipaddr`
+
+mkdir -p /tmp/openvpn/${conn_number}/
+case "${PLUTO_VERB}" in
+    up-client)
+        ip tunnel add "${dev}" mode vti local "${PLUTO_ME}" remote "${PLUTO_PEER}" key "${PLUTO_MARK_OUT%%/*}"
+        ip link set "${dev}" up
+        ip addr add "${PLUTO_MY_SOURCEIP}" dev "${dev}"
+        ip route add 127.0.0.0/8 dev lo table ${conn_number}
+        ip route add default via ${PLUTO_MY_SOURCEIP} dev ${dev} table ${conn_number}
+        ip rule add from ${gateway_ip%?}0/24 table ${conn_number}
+        sysctl -w "net.ipv4.conf.${dev}.disable_policy=1"
+        sysctl -w "net.ipv4.conf.${dev}.rp_filter=0"
+        wan_mtu=$(cat /sys/class/net/eth0.2/mtu)
+        ping_mtu=$(expr ${wan_mtu} - 28)
+        ifconfig ${dev} mtu "${wan_mtu}" up
+        new_mtu=$(ping -s ${ping_mtu} -c1 -M do -I ${dev} 8.8.8.8 2>/dev/null | grep 'Frag needed' | awk '{print substr($11,0,length($11)-1)}')
+        if [ -n "${new_mtu}" ]; then
+            ifconfig ${dev} mtu ${new_mtu} up
+        fi
+        echo "up" > /tmp/openvpn/${conn_number}/status
+        ;;
+    down-client)
+        echo "down" > /tmp/openvpn/${conn_number}/status
+        ip rule del from ${gateway_ip%?}0/24 table ${conn_number}
+        ip route del default via ${PLUTO_MY_SOURCEIP} dev ${dev} table ${conn_number}
+        ip route del 127.0.0.0/8 dev lo table ${conn_number}
+        ip tunnel del "${dev}"
+        ;;
+esac

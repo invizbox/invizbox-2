@@ -23,7 +23,7 @@ config blacklist 'gambling'
 	option source 'https://github.com/StevenBlack/hosts'
 
 config blacklist 'social'
-	option description 'Blocks access to social netowrking sites'
+	option description 'Blocks access to social networking sites'
 	option file '/etc/dns_blacklist/social'
 	option name 'Social Networking'
 	option source 'https://github.com/StevenBlack/hosts'

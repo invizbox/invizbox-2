@@ -1,4 +1,4 @@
-config defaults
+config defaults 'defaults'
 	option disable_ipv6 '1'
 	option forward 'REJECT'
 	option input 'REJECT'
@@ -7,7 +7,7 @@ config defaults
 
 # We need to accept udp packets on port 68,
 # see https://dev.openwrt.org/ticket/4108
-config rule
+config rule 'dhcp_renew'
 	option name 'Allow-DHCP-Renew'
 	option src 'wan'
 	option proto 'udp'
@@ -15,109 +15,248 @@ config rule
 	option target 'ACCEPT'
 	option family 'ipv4'
 
-config zone
+config rule 'conntrack_all'
+	option src 'lan_all'
+	option dest 'lan_all'
+	option extra '-m conntrack --ctstate NEW'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_vpn1'
+	option src 'lan_all'
+	option dest 'lan_vpn1'
+	option mark '1'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'vpn1_to_all'
+	option src 'lan_vpn1'
+	option dest 'lan_all'
+	option mark '1'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_vpn2'
+	option src 'lan_all'
+	option dest 'lan_vpn2'
+	option mark '2'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'vpn2_to_all'
+	option src 'lan_vpn2'
+	option dest 'lan_all'
+	option mark '2'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_vpn3'
+	option src 'lan_all'
+	option dest 'lan_vpn3'
+	option mark '4'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'vpn3_to_all'
+	option src 'lan_vpn3'
+	option dest 'lan_all'
+	option mark '4'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_vpn4'
+	option src 'lan_all'
+	option dest 'lan_vpn4'
+	option mark '8'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'vpn4_to_all'
+	option src 'lan_vpn4'
+	option dest 'lan_all'
+	option mark '8'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_tor'
+	option src 'lan_all'
+	option dest 'lan_tor'
+	option mark '16'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'tor_to_all'
+	option src 'lan_tor'
+	option dest 'lan_all'
+	option mark '16'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_clear1'
+	option src 'lan_all'
+	option dest 'lan_clear1'
+	option mark '32'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'clear1_to_all'
+	option src 'lan_clear1'
+	option dest 'lan_all'
+	option mark '32'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_clear2'
+	option src 'lan_all'
+	option dest 'lan_clear2'
+	option mark '64'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'clear2_to_all'
+	option src 'lan_clear2'
+	option dest 'lan_all'
+	option mark '64'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'all_to_local'
+	option src 'lan_all'
+	option dest 'lan_local'
+	option mark '128'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config rule 'local_to_all'
+	option src 'lan_local'
+	option dest 'lan_all'
+	option mark '128'
+	option proto 'all'
+	option target 'ACCEPT'
+
+config zone 'wan_zone'
 	option masq '1'
 	option mtu_fix '1'
 	option name 'wan'
 	option network 'wan'
 
-config zone
+config zone 'tunnels_zone'
+	option mtu_fix '1'
+	option name 'tunnels'
+	list network 'vpn_1'
+	list network 'vpn_2'
+	list network 'vpn_3'
+	list network 'vpn_4'
+
+config zone 'vpn1_zone'
 	option input 'ACCEPT'
 	option name 'lan_vpn1'
 	option network 'lan_vpn1'
 
-config zone
+config zone 'vpn2_zone'
 	option input 'ACCEPT'
 	option name 'lan_vpn2'
 	option network 'lan_vpn2'
 
-config zone
+config zone 'vpn3_zone'
 	option input 'ACCEPT'
 	option name 'lan_vpn3'
 	option network 'lan_vpn3'
 
-config zone
+config zone 'vpn4_zone'
 	option input 'ACCEPT'
 	option name 'lan_vpn4'
 	option network 'lan_vpn4'
 
-config zone
+config zone 'tor_zone'
 	option input 'ACCEPT'
 	option name 'lan_tor'
 	option network 'lan_tor'
 
-config zone
+config zone 'clear1_zone'
 	option input 'ACCEPT'
 	option name 'lan_clear1'
 	option network 'lan_clear1'
 
-config zone
+config zone 'clear2_zone'
 	option input 'ACCEPT'
 	option name 'lan_clear2'
 	option network 'lan_clear2'
 
-config zone
+config zone 'local_zone'
 	option input 'ACCEPT'
 	option name 'lan_local'
 	option network 'lan_local'
 
-config redirect
+config zone 'all_zone'
+	option input 'ACCEPT'
+	option name 'lan_all'
+	list network 'lan_vpn1'
+	list network 'lan_vpn2'
+	list network 'lan_vpn3'
+	list network 'lan_vpn4'
+	list network 'lan_tor'
+	list network 'lan_clear1'
+	list network 'lan_clear2'
+	list network 'lan_local'
+
+config redirect 'dns_vpn1'
 	option dest_ip '10.154.0.1'
 	option dest_port '53'
 	option src 'lan_vpn1'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_vpn2'
 	option dest_ip '10.154.1.1'
 	option dest_port '53'
 	option src 'lan_vpn2'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_vpn3'
 	option dest_ip '10.154.2.1'
 	option dest_port '53'
 	option src 'lan_vpn3'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_vpn4'
 	option dest_ip '10.154.3.1'
 	option dest_port '53'
 	option src 'lan_vpn4'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_tor'
 	option dest_ip '10.154.4.1'
 	option dest_port '53'
 	option src 'lan_tor'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_clear1'
 	option dest_ip '10.154.5.1'
 	option dest_port '53'
 	option src 'lan_clear1'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_clear2'
 	option dest_ip '10.154.6.1'
 	option dest_port '53'
 	option src 'lan_clear2'
 	option src_dport '53'
 	option target 'DNAT'
 
-config redirect
+config redirect 'dns_local'
 	option dest_ip '10.154.7.1'
 	option dest_port '53'
 	option src 'lan_local'
 	option src_dport '53'
 	option target 'DNAT'
 
-config include
+config include 'user_include'
 	option enabled '1'
 	option path '/etc/firewall.user'
 	option reload '1'
