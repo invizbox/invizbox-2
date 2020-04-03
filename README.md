@@ -33,7 +33,8 @@ If you want to get VPN updates, opkg updates and firmware updates from the Inviz
 In `src/files/etc/config/dhcp`, the current DNS values (8.8.8.8 and 8.8.4.4) point to the Google DNS servers.
 If you want to use your VPN provider's DNS servers, make sure to edit that file and change the servers
 from 8.8.8.8 and 8.8.4.4 to whatever your VPN provider DNS servers are (don't forget the @tun{0-4} after the IP address
-when doing so)
+when doing so). Similarly, make sure you put the correct DNS servers in `src/files/etc/config/vpn`, so they match
+the ovpn file/template in use for that protocol or server.
 
 ## Building an InvizBox 2 firmware
 

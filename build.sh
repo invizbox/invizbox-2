@@ -18,5 +18,6 @@ echo "Building the firmware"
 sed -e "s,@VPN_PROVIDER@,invizbox," -e "s,@2_VERSION@,${version}," ../src/files/etc/config/update > files/etc/config/update
 sed "s,@2_VERSION@,${version}," ../src/files/etc/banner > files/etc/banner
 make -j $(($(grep -c processor /proc/cpuinfo)))
+cd -
 mv openwrt/bin/targets/sunxi/cortexa7/invizbox-openwrt-sunxi-cortexa7-sun8i-h3-invizbox2-squashfs-sdcard.img.gz openwrt/bin/targets/sunxi/cortexa7/invizbox-openwrt-sunxi-cortexa7-sun8i-h3-invizbox2-squashfs-sdcard.bin
 echo "All Done!"
