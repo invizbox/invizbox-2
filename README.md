@@ -30,9 +30,9 @@ If you want to get VPN updates, opkg updates and firmware updates from the Inviz
 `CONFIG_PACKAGE_update` setting in the src/.config file.
 
 ### DNS and DNS leaking
-In `src/files/etc/config/dhcp`, the current DNS values (8.8.8.8 and 8.8.4.4) point to the Google DNS servers.
+In `src/files/etc/config/dhcp`, the current DNS values (208.67.222.222 and 208.67.220.220) point to the OpenDNS servers.
 If you want to use your VPN provider's DNS servers, make sure to edit that file and change the servers
-from 8.8.8.8 and 8.8.4.4 to whatever your VPN provider DNS servers are (don't forget the @tun{0-4} after the IP address
+from 208.67.222.222 and 208.67.220.220 to whatever your VPN provider DNS servers are (don't forget the @tun{0-4} after the IP address
 when doing so). Similarly, make sure you put the correct DNS servers in `src/files/etc/config/vpn`, so they match
 the ovpn file/template in use for that protocol or server.
 

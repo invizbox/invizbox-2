@@ -1,11 +1,8 @@
 config interface 'loopback'
 	option ifname 'lo'
 	option ipaddr '127.0.0.1'
-	option proto 'static'
 	option netmask '255.0.0.0'
-
-config globals 'globals'
-	option ula_prefix 'fdc8:c5a0:4e3b::/48'
+	option proto 'static'
 
 config interface 'wan'
 	option ifname 'eth0.2'

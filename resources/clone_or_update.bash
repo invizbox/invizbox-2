@@ -4,7 +4,7 @@ set -e
 set -u
 
 folder=$1
-commit_SHA="1d3bcc2d06899f5f1820dc0efd1c40a21f6fc45f"
+commit_SHA="f4c6d9689be9dac99462b4dba5764633cfc9c89f"
 repository="https://github.com/invizbox/openwrt.git"
 
 if [[ -d ${folder} ]]; then
