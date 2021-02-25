@@ -1,5 +1,6 @@
 config active 'active'
 	option expiry 'unknown'
+	option plan ''
 	option registered 'unknown'
 	option renewal 'unknown'
 	option vpn_1 'auckland'
